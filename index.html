@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rajveer Bhai</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            overflow: hidden;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 25%, #0f1a3e 50%, #1a2a4e 75%, #0a1a2e 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            font-family: 'Rajdhani', sans-serif;
+            text-align: center;
+            /* Monkey Cursor */
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewport='0 0 100 100' style='fill:white;font-size:24px;'><text y='50%25' x='50%25' dy='.35em' text-anchor='middle'>🐵</text></svg>") 16 16, auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            user-select: none;
+            color: white;
+            position: relative;
+        }
+
+        /* Animated gradient background */
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Floating orbs in background */
+        body::before,
+        body::after {
+            content: '';
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            z-index: 0;
+            animation: floatOrbs 8s ease-in-out infinite;
+        }
+
+        body::before {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(45deg, #ff00ff, #00ffff);
+            top: -100px;
+            left: -100px;
+        }
+
+        body::after {
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(45deg, #00ff88, #0088ff);
+            bottom: -150px;
+            right: -150px;
+            animation-delay: -4s;
+        }
+
+        @keyframes floatOrbs {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            25% {
+                transform: translate(30px, -30px) scale(1.1);
+            }
+
+            50% {
+                transform: translate(-20px, 20px) scale(0.95);
+            }
+
+            75% {
+                transform: translate(40px, 10px) scale(1.05);
+            }
+        }
+
+        /* Scanline effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0, 255, 255, 0.015) 2px,
+                    rgba(0, 255, 255, 0.015) 4px);
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            color: transparent;
+            background: linear-gradient(90deg, #00ffff, #ff00ff, #00ff88, #00ffff);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            font-size: 2.2rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+            z-index: 10;
+            animation: textGlow 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.5));
+        }
+
+        @keyframes textGlow {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+                filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.5));
+            }
+
+            50% {
+                background-position: 100% 50%;
+                filter: drop-shadow(0 0 30px rgba(255, 0, 255, 0.7));
+            }
+        }
+
+        #game-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        /* Glassmorphism Button */
+        #prank-btn {
+            padding: 12px 28px;
+            font-size: 1rem;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #fff;
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.15), rgba(255, 0, 255, 0.15));
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            box-shadow:
+                0 8px 32px rgba(0, 255, 255, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                0 0 20px rgba(0, 255, 255, 0.3);
+            cursor: pointer;
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            white-space: nowrap;
+            z-index: 20;
+            overflow: hidden;
+        }
+
+        #prank-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        #prank-btn:hover::before {
+            left: 100%;
+        }
+
+        #prank-btn:hover {
+            transform: translateX(-50%) scale(1.05);
+            box-shadow:
+                0 12px 40px rgba(0, 255, 255, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3),
+                0 0 40px rgba(255, 0, 255, 0.4);
+        }
+
+        /* Crazy button state - More neon! */
+        #prank-btn.crazy {
+            font-size: 1.1rem;
+            background: linear-gradient(135deg, rgba(255, 0, 255, 0.25), rgba(255, 150, 0, 0.25));
+            border: 2px solid rgba(255, 0, 255, 0.5);
+            box-shadow:
+                0 0 30px rgba(255, 0, 255, 0.5),
+                0 0 60px rgba(255, 150, 0, 0.3),
+                inset 0 0 20px rgba(255, 0, 255, 0.1);
+            animation: neonPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes neonPulse {
+
+            0%,
+            100% {
+                box-shadow:
+                    0 0 30px rgba(255, 0, 255, 0.5),
+                    0 0 60px rgba(255, 150, 0, 0.3);
+            }
+
+            50% {
+                box-shadow:
+                    0 0 50px rgba(255, 0, 255, 0.8),
+                    0 0 80px rgba(255, 150, 0, 0.5);
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-in forwards;
+        }
+
+        .fade-out {
+            animation: fadeOut 1s ease-out forwards;
+        }
+
+        .blast-in {
+            animation: blastIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
+
+        @keyframes blastIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.1) rotate(-10deg);
+                filter: blur(10px);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.15) rotate(3deg);
+                filter: blur(0);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        /* Glass Card for reveal content */
+        .reveal-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow:
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            animation: cardFloat 4s ease-in-out infinite;
+        }
+
+        /* Animated border for glass card */
+        .reveal-content::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff, #00ffff);
+            background-size: 400% 400%;
+            border-radius: 26px;
+            z-index: -1;
+            animation: borderGlow 3s ease infinite;
+            opacity: 0.7;
+        }
+
+        .reveal-content::after {
+            content: '';
+            position: absolute;
+            inset: 2px;
+            background: linear-gradient(135deg, rgba(10, 10, 30, 0.95), rgba(20, 10, 40, 0.95));
+            border-radius: 22px;
+            z-index: -1;
+        }
+
+        @keyframes cardFloat {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes borderGlow {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .reveal-img {
+            max-width: 220px;
+            border-radius: 16px;
+            box-shadow:
+                0 0 40px rgba(0, 255, 255, 0.4),
+                0 0 80px rgba(255, 0, 255, 0.2);
+            margin: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: imageGlow 3s ease-in-out infinite;
+        }
+
+        .reveal-img:hover {
+            transform: scale(1.05) rotate(2deg);
+            box-shadow:
+                0 0 60px rgba(0, 255, 255, 0.6),
+                0 0 120px rgba(255, 0, 255, 0.4);
+        }
+
+        @keyframes imageGlow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 40px rgba(0, 255, 255, 0.4), 0 0 80px rgba(255, 0, 255, 0.2);
+            }
+
+            50% {
+                box-shadow: 0 0 60px rgba(0, 255, 255, 0.6), 0 0 100px rgba(255, 0, 255, 0.4);
+            }
+        }
+
+        /* Emoji rain with glow */
+        .emoji-rain {
+            position: fixed;
+            top: -50px;
+            font-size: 2rem;
+            animation: fall linear forwards;
+            pointer-events: none;
+            z-index: 5;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 0, 0.5));
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(720deg);
+            }
+        }
+
+        /* Sparkle Stars */
+        .sparkle {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 2;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        @keyframes sparkle {
+
+            0%,
+            100% {
+                opacity: 0;
+                transform: scale(0);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1);
+                box-shadow: 0 0 10px #fff, 0 0 20px #00ffff;
+            }
+        }
+
+        /* Confetti particles */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            pointer-events: none;
+            z-index: 100;
+            animation: confettiFall 4s linear forwards;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Canvas for Fireworks */
+        #fireworks-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Glass Video Container */
+        #trump-video {
+            position: fixed;
+            bottom: 15px;
+            right: 15px;
+            width: 350px;
+            border-radius: 16px;
+            box-shadow:
+                0 0 30px rgba(0, 255, 255, 0.5),
+                0 0 60px rgba(255, 0, 255, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            z-index: 100;
+            opacity: 0;
+            transition: all 0.5s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        #trump-video.visible {
+            opacity: 1;
+            animation: videoGlow 2s ease-in-out infinite, videoFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes videoGlow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 30px rgba(0, 255, 255, 0.5), 0 0 60px rgba(255, 0, 255, 0.3);
+            }
+
+            50% {
+                box-shadow: 0 0 50px rgba(0, 255, 255, 0.7), 0 0 100px rgba(255, 0, 255, 0.5);
+            }
+        }
+
+        @keyframes videoFloat {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        /* Karela section styles */
+        #karela-reveal h1 {
+            font-size: 2rem;
+            background: linear-gradient(90deg, #00ff88, #00ffff, #00ff88);
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: textShimmer 2s ease-in-out infinite;
+        }
+
+        @keyframes textShimmer {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            100% {
+                background-position: 200% 50%;
+            }
+        }
+
+        #karela-reveal h2,
+        #karela-reveal p {
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+            animation: textPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes textPulse {
+
+            0%,
+            100% {
+                opacity: 0.9;
+            }
+
+            50% {
+                opacity: 1;
+                text-shadow: 0 0 20px rgba(0, 255, 136, 0.8);
+            }
+        }
+
+        /* Cake reveal section - PREMIUM */
+        #cake-reveal h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #FFD700, #ff6b6b, #ff00ff, #00ffff, #FFD700);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-transform: uppercase;
+            filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.7));
+            animation: celebrateText 3s ease-in-out infinite;
+        }
+
+        @keyframes celebrateText {
+            0% {
+                background-position: 0% 50%;
+                filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.5));
+            }
+
+            50% {
+                background-position: 100% 50%;
+                filter: drop-shadow(0 0 40px rgba(255, 0, 255, 0.8));
+            }
+
+            100% {
+                background-position: 200% 50%;
+                filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.5));
+            }
+        }
+
+        #cake-reveal h2 {
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 0 15px rgba(255, 0, 255, 0.5);
+            font-size: 1.2rem;
+            margin-top: 10px;
+            animation: subtitleGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes subtitleGlow {
+
+            0%,
+            100% {
+                text-shadow: 0 0 15px rgba(255, 0, 255, 0.5);
+            }
+
+            50% {
+                text-shadow: 0 0 30px rgba(255, 0, 255, 0.8), 0 0 50px rgba(0, 255, 255, 0.5);
+            }
+        }
+
+        /* Floating particles container */
+        #particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        /* ========== RESPONSIVE DESIGN ========== */
+
+        /* Large Desktop / 16:9 Laptop Screens (1920x1080 and above) */
+        @media (min-width: 1200px) and (min-aspect-ratio: 16/10) {
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            #prank-btn {
+                padding: 10px 20px;
+                font-size: 1rem;
+            }
+
+            .reveal-img {
+                max-width: 280px;
+            }
+
+            #cake-reveal h1 {
+                font-size: 2.8rem !important;
+            }
+
+            #cake-reveal h2 {
+                font-size: 1.3rem;
+            }
+
+            #trump-video {
+                width: 380px;
+            }
+        }
+
+        /* Medium Laptops (1366x768 typical) */
+        @media (min-width: 992px) and (max-width: 1199px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            #prank-btn {
+                padding: 8px 18px;
+                font-size: 0.95rem;
+            }
+
+            .reveal-img {
+                max-width: 240px;
+            }
+
+            #cake-reveal h1 {
+                font-size: 2.5rem !important;
+            }
+
+            #trump-video {
+                width: 180px;
+            }
+        }
+
+        /* Tablets (iPad, etc.) */
+        @media (min-width: 768px) and (max-width: 991px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            #prank-btn {
+                padding: 12px 20px;
+                font-size: 1.1rem;
+            }
+
+            .reveal-img {
+                max-width: 280px;
+            }
+
+            #cake-reveal h1 {
+                font-size: 3rem !important;
+            }
+
+            #cake-reveal h2 {
+                font-size: 1.5rem;
+            }
+
+            #trump-video {
+                width: 380px;
+                bottom: 15px;
+                right: 15px;
+            }
+        }
+
+        /* Mobile Phones (Landscape) */
+        @media (max-width: 767px) and (orientation: landscape) {
+            h1 {
+                font-size: 1.8rem;
+                margin-bottom: 10px;
+            }
+
+            #prank-btn {
+                padding: 10px 18px;
+                font-size: 1rem;
+            }
+
+            #prank-btn.crazy {
+                font-size: 1.1rem;
+            }
+
+            .reveal-img {
+                max-width: 180px;
+                margin: 10px;
+            }
+
+            #cake-reveal h1 {
+                font-size: 2rem !important;
+            }
+
+            #cake-reveal h2 {
+                font-size: 1rem;
+            }
+
+            #karela-reveal h2,
+            #karela-reveal p {
+                font-size: 1rem;
+            }
+
+            #trump-video {
+                width: 300px;
+                bottom: 10px;
+                right: 10px;
+            }
+
+            .emoji-rain {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Mobile Phones (Portrait) */
+        @media (max-width: 576px) and (orientation: portrait) {
+            body {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+                margin-bottom: 15px;
+                padding: 0 10px;
+            }
+
+            #prank-btn {
+                padding: 12px 20px;
+                font-size: 1rem;
+                max-width: 85vw;
+                white-space: normal;
+                text-align: center;
+                line-height: 1.4;
+            }
+
+            #prank-btn.crazy {
+                font-size: 1.1rem;
+                padding: 14px 22px;
+            }
+
+            .reveal-img {
+                max-width: 85vw;
+                max-height: 40vh;
+                object-fit: contain;
+                margin: 15px 10px;
+            }
+
+            #cake-reveal h1 {
+                font-size: 2rem !important;
+                padding: 0 10px;
+                line-height: 1.3;
+            }
+
+            #cake-reveal h2 {
+                font-size: 1.2rem;
+                padding: 0 10px;
+            }
+
+            #karela-reveal h1 {
+                font-size: 1.8rem;
+            }
+
+            #karela-reveal h2 {
+                font-size: 1.1rem;
+            }
+
+            #karela-reveal p {
+                font-size: 0.95rem;
+            }
+
+            #trump-video {
+                width: 65vw;
+                max-width: 280px;
+                bottom: 10px;
+                right: 10px;
+                border-radius: 10px;
+            }
+
+            .emoji-rain {
+                font-size: 1.3rem;
+            }
+        }
+
+        /* Extra Small Phones (iPhone SE, etc.) */
+        @media (max-width: 375px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            #prank-btn {
+                font-size: 0.9rem;
+                padding: 10px 16px;
+            }
+
+            #cake-reveal h1 {
+                font-size: 1.6rem !important;
+            }
+
+            #cake-reveal h2 {
+                font-size: 1rem;
+            }
+
+            .reveal-img {
+                max-width: 90vw;
+            }
+
+            #trump-video {
+                width: 65vw;
+            }
+        }
+
+        /* Touch device optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            #prank-btn {
+                /* Larger touch target for mobile */
+                min-height: 48px;
+                min-width: 120px;
+            }
+
+            /* Remove hover effects that don't work well on touch */
+            #prank-btn:hover {
+                transform: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Particles Container for sparkles -->
+    <div id="particles-container"></div>
+
+    <canvas id="fireworks-canvas"></canvas>
+
+    <div id="game-container">
+        <!-- Introduction - No spoiler! -->
+        <h1 id="main-title">Hey Rajveer Bro! ✨</h1>
+
+        <!-- The Prank Button -->
+        <button id="prank-btn">Click for Gift 🎁</button>
+
+        <!-- Phase 1: Karela Reveal -->
+        <div id="karela-reveal" class="reveal-content hidden">
+            <h1>Happy Birthday Rajveer! 🎉</h1>
+            <img src="karela.png" alt="Karela Gift" class="reveal-img"
+                style="box-shadow: 0 0 30px rgba(0, 255, 136, 0.6), 0 0 60px rgba(0, 255, 136, 0.3); max-width: 200px;">
+            <h2>Yeh lo gift! 😜</h2>
+            <p>(Sehat ke liye achha hai!)</p>
+        </div>
+
+        <!-- Phase 2: Real Cake & Fire Blast -->
+        <div id="cake-reveal" class="reveal-content hidden">
+            <h1>🎂 HAPPY BIRTHDAY RAJVEER! 🎂</h1>
+            <img src="rajveer.jpeg" alt="Rajveer Birthday" class="reveal-img">
+            <h1> Ek kadam Maut ki oor 💀 </h1>
+        </div>
+    </div>
+
+    <audio id="first-sound" src="first_reveal.mp3"></audio>
+    <audio id="final-sound" src="final_reveal.mp3"></audio>
+
+    <!-- Trump Video (hidden initially) - preload for smooth playback -->
+    <video id="trump-video" src="trump_wish.mp4" preload="auto"></video>
+
+    <script>
+        const btn = document.getElementById('prank-btn');
+        const karelaDiv = document.getElementById('karela-reveal');
+        const cakeDiv = document.getElementById('cake-reveal');
+        const title = document.getElementById('main-title');
+        const firstSound = document.getElementById('first-sound');
+        const finalSound = document.getElementById('final-sound');
+        const canvas = document.getElementById('fireworks-canvas');
+        const ctx = canvas.getContext('2d');
+        const particlesContainer = document.getElementById('particles-container');
+
+        // Resize canvas
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // ========== SPARKLE STARS BACKGROUND (OPTIMIZED) ==========
+        function createSparkles() {
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'sparkle';
+                    sparkle.style.left = Math.random() * 100 + 'vw';
+                    sparkle.style.top = Math.random() * 100 + 'vh';
+                    sparkle.style.animationDelay = Math.random() * 2 + 's';
+                    sparkle.style.animationDuration = (2 + Math.random() * 2) + 's';
+                    particlesContainer.appendChild(sparkle);
+                }, i * 200);
+            }
+        }
+        createSparkles();
+
+        // Continuously add new sparkles (slower rate for performance)
+        let sparkleInterval = setInterval(() => {
+            if (particlesContainer.children.length < 20) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = Math.random() * 100 + 'vw';
+                sparkle.style.top = Math.random() * 100 + 'vh';
+                sparkle.style.animationDuration = (2 + Math.random() * 2) + 's';
+                particlesContainer.appendChild(sparkle);
+                setTimeout(() => sparkle.remove(), 4000);
+            }
+        }, 800);
+
+        // ========== CONFETTI EXPLOSION (OPTIMIZED) ==========
+        let confettiInterval = null;
+        function createConfetti() {
+            const confettiColors = ['#ff0000', '#00ff00', '#ffff00', '#ff00ff', '#00ffff', '#ffa500'];
+
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.backgroundColor = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    confetti.style.animationDuration = (3 + Math.random() * 2) + 's';
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 5000);
+                }, i * 50);
+            }
+        }
+
+        let attempts = 0;
+        const maxAttempts = 15;
+        let isPlayable = false;
+
+        const phrases = [
+            "Arrey pakad! 🤣",
+            "Oye hero! 😎",
+            "Rehne do! 😂",
+            "GAY h kya 🐢",
+            "Koshish toh karo bro! 😜",
+            "Pakad ke dikhaw! 🐒",
+            "Almost there! 😉",
+            "Haha! Miss! 😝",
+            "Itna slow? 🐌",
+            "Try harder! 💪",
+            "Teri umar ho gayi h bhai! 👴",
+            "Chal chal next! 🏃",
+            "Bechara BHAii ",
+            "Rajveerw is GAY! 😜",
+            "GAy gay gay 🎮"
+        ];
+
+        // Prank Visual Logic
+        function handlePrankAttempt(e) {
+            if (isPlayable) return;
+
+            if (e.type === 'touchstart') {
+                e.preventDefault();
+            }
+
+            attempts++;
+
+            if (attempts > 3 && !btn.classList.contains('crazy')) {
+                btn.classList.add('crazy');
+            }
+
+            if (attempts >= maxAttempts) {
+                isPlayable = true;
+                btn.textContent = "Okay bhai, thak gaya hoga. Le lo apna gift! 🙄";
+                btn.style.background = "linear-gradient(135deg, rgba(46, 204, 113, 0.4), rgba(0, 255, 136, 0.4))";
+                btn.style.transform = "scale(1.2)";
+                btn.style.boxShadow = "0 0 40px rgba(46, 204, 113, 0.8), 0 0 80px rgba(0, 255, 136, 0.5)";
+                return;
+            }
+
+            runAway();
+            const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+            btn.textContent = randomPhrase;
+            rainEmojis();
+        }
+
+        btn.addEventListener('mouseover', handlePrankAttempt);
+        btn.addEventListener('touchstart', handlePrankAttempt, { passive: false });
+
+        function runAway() {
+            const btnWidth = btn.offsetWidth || 200;
+            const btnHeight = btn.offsetHeight || 50;
+            const padding = Math.min(50, window.innerWidth * 0.05);
+
+            const maxX = window.innerWidth - btnWidth - padding;
+            const maxY = window.innerHeight - btnHeight - padding;
+            const minX = padding;
+            const minY = padding + 60;
+
+            const newX = Math.random() * (maxX - minX) + minX;
+            const newY = Math.random() * (maxY - minY) + minY;
+
+            btn.style.left = newX + 'px';
+            btn.style.top = newY + 'px';
+            btn.style.transform = `scale(${0.95 + Math.random() * 0.1}) rotate(${Math.random() * 10 - 5}deg)`;
+        }
+
+        // Enhanced emoji rain with variety
+        function rainEmojis() {
+            const container = document.body;
+            const emojis = ['😂', '🤣', '😝', '😜', '�', '🙊', '💀', '🔥'];
+
+            for (let i = 0; i < 8; i++) {
+                const emoji = document.createElement('div');
+                emoji.classList.add('emoji-rain');
+                emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                emoji.style.left = Math.random() * 100 + 'vw';
+                emoji.style.animationDuration = (1 + Math.random() * 2) + 's';
+                emoji.style.fontSize = (1.5 + Math.random() * 1.5) + 'rem';
+                container.appendChild(emoji);
+                setTimeout(() => emoji.remove(), 3000);
+            }
+        }
+
+        btn.addEventListener('click', () => {
+            if (!isPlayable && attempts < maxAttempts) {
+                runAway();
+                return;
+            }
+            playReveal();
+        });
+
+        function playReveal() {
+            try { firstSound.play().catch(e => { }); } catch (e) { }
+
+            btn.style.display = 'none';
+            title.style.display = 'none';
+
+            karelaDiv.classList.remove('hidden');
+            karelaDiv.classList.add('fade-in');
+
+            setTimeout(() => {
+                karelaDiv.classList.add('fade-out');
+                setTimeout(() => {
+                    karelaDiv.classList.add('hidden');
+
+                    try { finalSound.play().catch(e => { }); } catch (e) { }
+
+                    cakeDiv.classList.remove('hidden');
+                    cakeDiv.classList.add('blast-in');
+
+                    // Start fireworks and confetti!
+                    loopFireworks();
+                    createConfetti();
+
+                    // Continue confetti every few seconds (but stop when video plays)
+                    confettiInterval = setInterval(createConfetti, 6000);
+
+                    setTimeout(() => {
+                        playTrumpVideo();
+                    }, 5000);
+
+                }, 1000);
+            }, 6000);
+        }
+
+        // Trump Video Logic
+        const trumpVideo = document.getElementById('trump-video');
+
+        function playTrumpVideo() {
+            // Stop heavy effects for smooth video
+            if (confettiInterval) clearInterval(confettiInterval);
+            clearInterval(sparkleInterval);
+
+            finalSound.volume = 0.05;
+
+            trumpVideo.classList.add('visible');
+            trumpVideo.play();
+
+            trumpVideo.addEventListener('ended', () => {
+                finalSound.volume = 1.0;
+                trumpVideo.classList.remove('visible');
+                // Resume sparkles
+                sparkleInterval = setInterval(() => {
+                    if (particlesContainer.children.length < 20) {
+                        const sparkle = document.createElement('div');
+                        sparkle.className = 'sparkle';
+                        sparkle.style.left = Math.random() * 100 + 'vw';
+                        sparkle.style.top = Math.random() * 100 + 'vh';
+                        sparkle.style.animationDuration = (2 + Math.random() * 2) + 's';
+                        particlesContainer.appendChild(sparkle);
+                        setTimeout(() => sparkle.remove(), 4000);
+                    }
+                }, 800);
+            });
+        }
+
+        // ========== OPTIMIZED FIREWORKS ENGINE ==========
+        const particles = [];
+        const colors = ['#ff0043', '#14fc56', '#1e90ff', '#e4ff1a', '#ff7800', '#ffffff'];
+
+        function createFirework(x, y) {
+            const count = 25; // Reduced for performance
+            for (let i = 0; i < count; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 5 + 2;
+                particles.push({
+                    x: x,
+                    y: y,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed,
+                    alpha: 1,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    decay: 0.02 + Math.random() * 0.01
+                });
+            }
+        }
+
+        function loopFireworks() {
+            requestAnimationFrame(loopFireworks);
+
+            // Fade effect for trails
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.globalCompositeOperation = 'lighter';
+
+            // Reduced frequency fireworks for performance
+            if (Math.random() < 0.04) {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height * 0.7;
+                createFirework(x, y);
+            }
+
+            // Update particles
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.05; // Gravity
+                p.alpha -= p.decay;
+
+                if (p.alpha <= 0) {
+                    particles.splice(i, 1);
+                } else {
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color;
+                    ctx.globalAlpha = p.alpha;
+                    ctx.fill();
+                }
+            }
+            ctx.globalAlpha = 1;
+        }
+
+    </script>
+</body>
+
+</html>
